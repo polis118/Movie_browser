@@ -74,6 +74,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.foundation:foundation-layout-android:1.6.8")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
 
     // Test dependencies
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

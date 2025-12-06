@@ -19,6 +19,7 @@ class HomeViewModel : ViewModel() {
 
     var isLoading = mutableStateOf(false)
     var isSearching = mutableStateOf(false)
+    var error = mutableStateOf<String?>(null)
 
     init {
         loadCategories()
@@ -27,7 +28,7 @@ class HomeViewModel : ViewModel() {
     private fun loadCategories() {
         viewModelScope.launch {
             isLoading.value = true
-            // Načítání urychlíme paralelním spuštěním
+            error.value = null
             val mostWatchedDeferred = async { repo.searchMovies("Marvel") }
             val popularDeferred = async { repo.searchMovies("Lord of the Rings") }
             val newDeferred = async { repo.searchMovies("Dune") }
@@ -35,18 +36,26 @@ class HomeViewModel : ViewModel() {
             try {
                 val mostWatchedResult = mostWatchedDeferred.await()
                 if (mostWatchedResult.response == "True") {
-                    mostWatchedMovies.value = mostWatchedResult.search
+                    mostWatchedMovies.value = mostWatchedResult.search ?: emptyList()
+                } else {
+                    throw Exception(mostWatchedResult.error)
                 }
 
                 val popularResult = popularDeferred.await()
                 if (popularResult.response == "True") {
-                    popularMovies.value = popularResult.search
+                    popularMovies.value = popularResult.search ?: emptyList()
+                } else {
+                    throw Exception(popularResult.error)
                 }
 
                 val newResult = newDeferred.await()
                 if (newResult.response == "True") {
-                    newMovies.value = newResult.search
+                    newMovies.value = newResult.search ?: emptyList()
+                } else {
+                    throw Exception(newResult.error)
                 }
+            } catch (e: Exception) {
+                error.value = e.message ?: "An unknown error occurred."
             } finally {
                 isLoading.value = false
             }
@@ -59,17 +68,21 @@ class HomeViewModel : ViewModel() {
             searchResults.value = emptyList()
             return
         }
-        
+
         isSearching.value = true
         viewModelScope.launch {
             isLoading.value = true
+            error.value = null
             try {
                 val result = repo.searchMovies(query)
                 if (result.response == "True") {
-                    searchResults.value = result.search
+                    searchResults.value = result.search ?: emptyList()
                 } else {
-                    searchResults.value = emptyList()
+                    searchResults.value = emptyList() // Clear results on API error
                 }
+            } catch (e: Exception) {
+                error.value = e.message ?: "An unknown error occurred."
+                searchResults.value = emptyList()
             } finally {
                 isLoading.value = false
             }
