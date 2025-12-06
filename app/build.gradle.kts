@@ -72,6 +72,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.2.0")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.compose.foundation:foundation-layout-android:1.6.8")
+    implementation("androidx.compose.material:material-icons-extended")
 
     // Test dependencies
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

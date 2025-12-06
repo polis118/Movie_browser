@@ -17,7 +17,7 @@ fun AppNavGraph(navController: NavHostController) {
 
         composable("detail/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")!!
-            DetailScreen(movieId = id)
+            DetailScreen(navController = navController, movieId = id)
         }
     }
 }
