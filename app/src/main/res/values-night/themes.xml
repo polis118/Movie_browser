@@ -1,7 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MovieBrowser" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!-- Base application theme, dependent on Material Components library. -->
+    <style name="Theme.MovieBrowser" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--
+            This is the base theme for the app BEFORE compose is loaded.
+            The actual Compose theme is defined in ui/theme/Theme.kt
+        -->
+    </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.MovieBrowser</item>
     </style>
 </resources>
